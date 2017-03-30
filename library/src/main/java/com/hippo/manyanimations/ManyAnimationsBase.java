@@ -28,6 +28,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.Property;
 import android.view.View;
+import android.widget.TextView;
 import com.hippo.manyanimations.reveal.Revealable;
 import com.hippo.manyanimations.util.FloatProperty;
 import com.hippo.manyanimations.util.IntProperty;
@@ -119,5 +120,29 @@ final class ManyAnimationsBase {
     } else {
       return null;
     }
+  }
+
+  ///////////////////////////////////////////////////////////////////////////
+  // Recolor Text
+  ///////////////////////////////////////////////////////////////////////////
+
+  public static final Property<TextView, Integer> TEXT_VIEW_COLOR =
+      new IntProperty<TextView>() {
+        @Override
+        public void setValue(TextView object, int value) {
+          object.setTextColor(value);
+        }
+
+        @Override
+        public Integer get(TextView object) {
+          return object.getTextColors().getDefaultColor();
+        }
+      };
+
+  static Animator recolorText(TextView view, int startColor, int endColor) {
+    ObjectAnimator animator = ObjectAnimator.ofInt(
+        view, TEXT_VIEW_COLOR, startColor, endColor);
+    animator.setEvaluator(new ArgbEvaluator());
+    return animator;
   }
 }

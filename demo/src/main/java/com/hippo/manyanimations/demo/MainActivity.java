@@ -26,31 +26,29 @@ import android.widget.ListView;
 
 public class MainActivity extends AppCompatActivity {
 
+  private static final String[] NAMES = new String[] {
+      "Circular Reveal",
+      "Recolor Background",
+      "Recolor Text",
+  };
+
+  private static final Class<?>[] ACTIVITIES = new Class<?>[] {
+      CircularRevealActivity.class,
+      RecolorBackgroundActivity.class,
+      RecolorTextActivity.class,
+  };
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
     ListView list = (ListView) findViewById(R.id.list);
-    list.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new String[]{
-        "Circular Reveal",
-        "Recolor Background",
-    }));
+    list.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, NAMES));
     list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Class<?> clazz;
-        switch (position) {
-          case 0:
-            clazz = CircularRevealActivity.class;
-            break;
-          case 1:
-            clazz = RecolorBackgroundActivity.class;
-            break;
-          default:
-            throw new IllegalStateException();
-        }
-        startActivity(new Intent(MainActivity.this, clazz));
+        startActivity(new Intent(MainActivity.this, ACTIVITIES[position]));
       }
     });
   }

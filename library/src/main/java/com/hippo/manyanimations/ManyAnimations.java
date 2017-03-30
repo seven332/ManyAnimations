@@ -26,6 +26,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.view.View;
+import android.widget.TextView;
 import com.hippo.manyanimations.util.EmptyAnimator;
 
 public final class ManyAnimations {
@@ -35,6 +36,7 @@ public final class ManyAnimations {
     Animator circularReveal(View view,
         int centerX, int centerY, float startRadius, float endRadius);
     Animator recolorBackground(View view, int startColor, int endColor);
+    Animator recolorText(TextView view, int startColor, int endColor);
   }
 
   private static class BaseManyAnimationsImpl implements ManyAnimationsImpl {
@@ -47,6 +49,11 @@ public final class ManyAnimations {
     @Override
     public Animator recolorBackground(View view, int startColor, int endColor) {
       return ManyAnimationsBase.recolorBackground(view, startColor, endColor);
+    }
+
+    @Override
+    public Animator recolorText(TextView view, int startColor, int endColor) {
+      return ManyAnimationsBase.recolorText(view, startColor, endColor);
     }
   }
 
@@ -119,5 +126,13 @@ public final class ManyAnimations {
   @Nullable
   public static Animator recolorBackgroundNullable(View view, int startColor, int endColor) {
     return IMPL.recolorBackground(view, startColor, endColor);
+  }
+
+  /**
+   * Recolor text.
+   */
+  @NonNull
+  public static Animator recolorText(TextView view, int startColor, int endColor) {
+    return IMPL.recolorText(view, startColor, endColor);
   }
 }
