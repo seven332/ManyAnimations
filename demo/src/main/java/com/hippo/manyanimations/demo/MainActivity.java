@@ -33,20 +33,24 @@ public class MainActivity extends AppCompatActivity {
 
     ListView list = (ListView) findViewById(R.id.list);
     list.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new String[]{
-        "Circular Reveal"
+        "Circular Reveal",
+        "Recolor Background",
     }));
     list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent;
+        Class<?> clazz;
         switch (position) {
           case 0:
-            intent = new Intent(MainActivity.this, CircularRevealActivity.class);
+            clazz = CircularRevealActivity.class;
+            break;
+          case 1:
+            clazz = RecolorBackgroundActivity.class;
             break;
           default:
             throw new IllegalStateException();
         }
-        startActivity(intent);
+        startActivity(new Intent(MainActivity.this, clazz));
       }
     });
   }

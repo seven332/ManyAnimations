@@ -34,6 +34,7 @@ public final class ManyAnimations {
   private interface ManyAnimationsImpl {
     Animator circularReveal(View view,
         int centerX, int centerY, float startRadius, float endRadius);
+    Animator recolorBackground(View view, int startColor, int endColor);
   }
 
   private static class BaseManyAnimationsImpl implements ManyAnimationsImpl {
@@ -41,6 +42,11 @@ public final class ManyAnimations {
     public Animator circularReveal(View view,
         int centerX, int centerY, float startRadius, float endRadius) {
       return ManyAnimationsBase.circularReveal(view, centerX, centerY, startRadius, endRadius);
+    }
+
+    @Override
+    public Animator recolorBackground(View view, int startColor, int endColor) {
+      return ManyAnimationsBase.recolorBackground(view, startColor, endColor);
     }
   }
 
@@ -88,5 +94,30 @@ public final class ManyAnimations {
   public static Animator circularRevealNullable(View view,
       int centerX, int centerY, float startRadius, float endRadius) {
     return IMPL.circularReveal(view, centerX, centerY, startRadius, endRadius);
+  }
+
+  /**
+   * Recolor background if it is {@link android.graphics.drawable.ColorDrawable}.
+   * <p>
+   * Returns an empty animation if can't create it.
+   */
+  @NonNull
+  public static Animator recolorBackground(View view, int startColor, int endColor) {
+    Animator animator = IMPL.recolorBackground(view, startColor, endColor);
+    if (animator != null) {
+      return animator;
+    } else {
+      return EmptyAnimator.create();
+    }
+  }
+
+  /**
+   * Recolor background if it is {@link android.graphics.drawable.ColorDrawable}.
+   * <p>
+   * Returns {@code null} if can't create it.
+   */
+  @Nullable
+  public static Animator recolorBackgroundNullable(View view, int startColor, int endColor) {
+    return IMPL.recolorBackground(view, startColor, endColor);
   }
 }

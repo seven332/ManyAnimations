@@ -22,13 +22,22 @@ package com.hippo.manyanimations;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.util.Property;
 import android.view.View;
 import com.hippo.manyanimations.reveal.Revealable;
 import com.hippo.manyanimations.util.FloatProperty;
+import com.hippo.manyanimations.util.IntProperty;
 
 final class ManyAnimationsBase {
   private ManyAnimationsBase() {}
+
+  ///////////////////////////////////////////////////////////////////////////
+  // Circular Reveal
+  ///////////////////////////////////////////////////////////////////////////
 
   private static class RevealProperty extends FloatProperty<Revealable> {
 
@@ -76,6 +85,36 @@ final class ManyAnimationsBase {
       Animator animator = ObjectAnimator.ofFloat((Revealable) view,
           new RevealProperty(centerX, centerY), startRadius, endRadius);
       animator.addListener(new RevealAnimatorListener((Revealable) view));
+      return animator;
+    } else {
+      return null;
+    }
+  }
+
+  ///////////////////////////////////////////////////////////////////////////
+  // Recolor Background
+  ///////////////////////////////////////////////////////////////////////////
+
+  public static final Property<ColorDrawable, Integer> COLOR_DRAWABLE_COLOR =
+      new IntProperty<ColorDrawable>() {
+        @Override
+        public void setValue(ColorDrawable object, int value) {
+          object.setColor(value);
+        }
+
+        @Override
+        public Integer get(ColorDrawable object) {
+          return object.getColor();
+        }
+  };
+
+  static Animator recolorBackground(View view, int startColor, int endColor) {
+    Drawable drawable = view.getBackground();
+    if (drawable instanceof ColorDrawable) {
+      ColorDrawable colorDrawable = (ColorDrawable) drawable;
+      ObjectAnimator animator = ObjectAnimator.ofInt(
+          colorDrawable, COLOR_DRAWABLE_COLOR, startColor, endColor);
+      animator.setEvaluator(new ArgbEvaluator());
       return animator;
     } else {
       return null;
